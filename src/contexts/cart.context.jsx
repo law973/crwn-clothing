@@ -14,7 +14,11 @@ const addCartItem = (cartItems, productToAdd) => {
     };
 
     return [...cartItems, { ...productToAdd, quantity: 1 }];
-}
+};
+
+const removeCartItem = (cartItems, productToRemove) => {
+
+};
 
 export const CartContext = createContext({
     isCartOpen: false,
