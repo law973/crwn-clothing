@@ -2,6 +2,7 @@ import { screen } from "@testing-library/react";
 
 import Navigation from "../navigation.component";
 import { renderWithProviders } from "../../../utils/test/test.utils";
+import { setIsCartOpen } from "../../../store/cart/cart.action";
 
 describe('Navigation tests', () => {
     test('It should render Sign In and not Sign Out if there is no currentUser', () => {
@@ -34,5 +35,33 @@ describe('Navigation tests', () => {
 
         const signOutLinkElement = screen.getByText(/sign out/i);
         expect(signOutLinkElement).toBeInTheDocument();
+    });
+
+    test('It should not render a cart dropdown if isCartOpen is false', () => {
+        renderWithProviders(<Navigation/>, {
+            preloadedState: {
+                cart: {
+                    isCartOpen: false,
+                    cartItems: []
+                }
+            }
+        });
+
+        const dropdownTextElement = screen.queryByText(/your cart is empty/i);
+        expect(dropdownTextElement).toBeNull();
+    });
+
+    test('It should render a cart dropdown if isCartOpen is true', () => {
+        renderWithProviders(<Navigation/>, {
+            preloadedState: {
+                cart: {
+                    isCartOpen: true,
+                    cartItems: []
+                }
+            }
+        });
+
+        const dropdownTextElement = screen.getByText(/your cart is empty/i);
+        expect(dropdownTextElement).toBeInTheDocument();
     });
 });
